@@ -85,7 +85,62 @@ public class DoublyLinkedList<T> where T : IComparable<T>
             current = current.Next;
         }
         return false;
-    }    
+    }
+    public bool RemoveFirst(T data)
+    {
+        var current = _head;
+        while (current != null)
+        {
+            if (current.Data!.CompareTo(data) == 0)
+            {
+                RemoveNode(current);
+                return true;
+            }
+            current = current.Next;
+        }
+        return false;
+    }
+
+    public int RemoveAll(T data)
+    {
+        var removedCount = 0;
+        var current = _head;
+        while (current != null)
+        {
+            var next = current.Next;
+            if (current.Data!.CompareTo(data) == 0)
+            {
+                RemoveNode(current);
+                removedCount++;
+            }
+            current = next;
+        }
+        return removedCount;
+    }
+
+    private void RemoveNode(DoubleNode<T> node)
+    {
+        if (node.Prev == null)
+        {
+            _head = node.Next;
+        }
+        else
+        {
+            node.Prev.Next = node.Next;
+        }
+
+        if (node.Next == null)
+        {
+            _tail = node.Prev;
+        }
+        else
+        {
+            node.Next.Prev = node.Prev;
+        }
+
+        node.Prev = null;
+        node.Next = null;
+    }
     override public string ToString()
     {
         if (_head == null)
