@@ -8,13 +8,14 @@ var typeOption = Console.ReadLine();
 
 if (typeOption == "1")
 {
-    RunMenu(new DoublyLinkedList<int>(), input => (int.TryParse(input, out var number), number));
+    RunMenu(new DoublyLinkedList<int>());
 }
 else
 {
-    RunMenu(new DoublyLinkedList<string>(), input => (!string.IsNullOrWhiteSpace(input), input));
+    RunMenu(new DoublyLinkedList<string>());
 }
-void RunMenu<T> (DoublyLinkedList<T> list) where T: IComparable<T>, IParsable<T>
+
+void RunMenu<T>(DoublyLinkedList<T> list) where T : IComparable<T>, IParsable<T>
 {
     var option = string.Empty;
     do
@@ -23,7 +24,7 @@ void RunMenu<T> (DoublyLinkedList<T> list) where T: IComparable<T>, IParsable<T>
         switch (option)
         {
             case "1":
-                if (TryReadValue(out T? newValue))
+                if (TryReadValue(out T newValue))
                 {
                     list.Add(newValue);
                     Console.WriteLine($"The item: {newValue} was added.");
@@ -47,7 +48,7 @@ void RunMenu<T> (DoublyLinkedList<T> list) where T: IComparable<T>, IParsable<T>
                 Console.WriteLine(list.GetGraph());
                 break;
             case "7":
-                if (TryReadValue(out T? searchValue))
+                if (TryReadValue(out T searchValue))
                 {
                     Console.WriteLine(list.Contains(searchValue)
                         ? $"The item: {searchValue} exists."
@@ -55,7 +56,7 @@ void RunMenu<T> (DoublyLinkedList<T> list) where T: IComparable<T>, IParsable<T>
                 }
                 break;
             case "8":
-                if (TryReadValue(out T? valueToRemove))
+                if (TryReadValue(out T valueToRemove))
                 {
                     Console.WriteLine(list.RemoveFirst(valueToRemove)
                         ? $"The first occurrence of {valueToRemove} was removed."
@@ -63,7 +64,7 @@ void RunMenu<T> (DoublyLinkedList<T> list) where T: IComparable<T>, IParsable<T>
                 }
                 break;
             case "9":
-                if (TryReadValue(out T? valuesToRemove))
+                if (TryReadValue(out T valuesToRemove))
                 {
                     var removedCount = list.RemoveAll(valuesToRemove);
                     Console.WriteLine(removedCount > 0
@@ -92,6 +93,35 @@ bool TryReadValue<T>(out T value) where T : IParsable<T>
         return false;
     }
     return true;
+}
+void ShowModes<T>(List<T> modes)
+{
+    if (modes.Count == 0)
+    {
+        Console.WriteLine("Empty list");
+        return;
+    }
+
+    if (modes.Count == 1)
+    {
+        Console.WriteLine($"The mode is {modes[0]}.");
+        return;
+    }
+
+    var output = "The modes are ";
+    for (var i = 0; i < modes.Count; i++)
+    {
+        output += modes[i];
+        if (i < modes.Count - 2)
+        {
+            output += ", ";
+        }
+        else if (i == modes.Count - 2)
+        {
+            output += " and ";
+        }
+    }
+    Console.WriteLine($"{output}.");
 }
 string Menu()
 {

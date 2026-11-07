@@ -141,6 +141,56 @@ public class DoublyLinkedList<T> where T : IComparable<T>
         node.Prev = null;
         node.Next = null;
     }
+    public List<T> GetModes()
+    {
+        var modes = new List<T>();
+        var maxCount = 0;
+        var current = _head;
+        while (current != null)
+        {
+            var value = current.Data!;
+            var count = 0;
+            while (current != null && current.Data!.CompareTo(value) == 0)
+            {
+                count++;
+                current = current.Next;
+            }
+
+            if (count > maxCount)
+            {
+                maxCount = count;
+                modes.Clear();
+                modes.Add(value);
+            }
+            else if (count == maxCount)
+            {
+                modes.Add(value);
+            }
+        }
+        return modes;
+    }
+    public string GetGraph()
+    {
+        if (_head == null)
+        {
+            return "Empty list";
+        }
+
+        var output = string.Empty;
+        var current = _head;
+        while (current != null)
+        {
+            var value = current.Data!;
+            var count = 0;
+            while (current != null && current.Data!.CompareTo(value) == 0)
+            {
+                count++;
+                current = current.Next;
+            }
+            output += $"{value} {new string('*', count)}{Environment.NewLine}";
+        }
+        return output;
+    }
     override public string ToString()
     {
         if (_head == null)
